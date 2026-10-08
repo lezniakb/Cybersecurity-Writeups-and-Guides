@@ -166,6 +166,10 @@ PORT      STATE SERVICE     VERSION
 ```
 > This one can take a bit longer, took me one minute on attackbox
 
+---
+
+### Retrieve hidden SMB drive
+
 list smb
 ```
 root@ip-10-114-120-13:~# smbclient -L \\\\10.114.143.187\\anonymous -p 17800 --user=anonymous
@@ -220,7 +224,12 @@ root@ip-10-114-120-13:~/Downloads# cat retrieval_orders.txt
     ============================================================
 
 ```
-dig through comms?
+
+---
+
+### Dig through comms
+
+dig through comms? what's inside?
 ```
 root@ip-10-114-120-13:~/Downloads# file communication_scramble.heavy 
 communication_scramble.heavy: Unicode text, UTF-8 text
@@ -258,6 +267,11 @@ Found Rare Sample!
 Rare sample: `THM{SCR4M8LED_4UDI0_CH4NN3L_R4C0VER3D}`
 
 and we have RSA. RSA is used for SSH login.
+
+---
+
+### Using the RSA Key
+
 ```
 root@ip-10-114-120-13:~/Downloads# nano broken_id_rsa 
 ```
@@ -296,9 +310,66 @@ john@super-earth:~$
 
 TADAAAAM. We are john helldiver.
 
+---
+
+### Pwn the machine
+
+What's inside quotes_to_live_by.txt? Maybe a clue?
+```
+john@super-earth:~$ ls
+new_orders.txt  quotes_to_live_by.txt
+john@super-earth:~$ cat quotes_to_live_by.txt 
+How'd you like the taste of FREEDOM!
+Injury? What injury?!
+Hellbomb armed!
+
+FREEDOM NEVER SLEEPS!
+john@super-earth:~$ 
+```
+Nah, just a patriotic Helldiver spreading Managed Democracy!
+
+Allow me to look for new orders..
+```
+john@super-earth:~$ cat new_orders.txt 
+
+        ===== Transmission from Super Earth Command =====
+
+      Good, you've managed to gain access to the account.
+      Now finish the job.
+
+      The Higherups told us each minute 
+          the democracy is being spread across the galaxy..
+      
+      You can always use a strategem if you're struggling.
+
+  ============================================================
+john@super-earth:~$ 
+```
+We can deduce two clues here:
+- democracy is being spread *each minute* (time scheduling -something-something..)
+- we can always *use a strategem*
+
+It turns out yes, yes we can escalate our privileges in both ways!
+
+---
+
+### Privilege escalation by Spreading Democracy each minute (Solution 1)
+
+
+---
+
+### Privilege escalation by using a Strategem (Solution 2)
+
+---
+
+### Conclusion
+
+---
+
 ### Sources
 - Nmap
 - FTP on Linux
 - Binwalk
 - SMB Client
-
+- [what is id rsa](https://www.reddit.com/r/linux4noobs/comments/wa43ms/what_is_id_rsa_in_ssh/)
+- [what is ssh key](https://www.sectigo.com/blog/what-is-an-ssh-key) 
