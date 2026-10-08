@@ -1,4 +1,4 @@
-<img width="502" height="212" alt="image" src="https://github.com/user-attachments/assets/c893896a-9620-49a8-9d65-f241f34f84ae" /># Super Earth
+# Super Earth
 ### For Managed Democracy
 "*The existence of high casualty missions implies the existence of low casualty missions, and we can take some solace in that*"
 
