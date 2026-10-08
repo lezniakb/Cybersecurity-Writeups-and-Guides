@@ -1,8 +1,8 @@
-cff-version: 1.1.0
+cff-version: 1.2.0
 message: "If you use these writeups guides or walktroughs, please cite them as below."
 authors:
   - family-names: "Łężniak"
     given-names: "Bartosz"
-title: "Writeups Guides Walktroughs"
+title: "Cybersecurity Writeups and Guides"
 date-released: 2026-07-29
-url: "https://github.com/lezniakb/Writeups-Guides-Walktroughs"
+url: "https://github.com/lezniakb/Cybersecurity-Writeups-and-Guides"
